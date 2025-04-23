@@ -64,4 +64,21 @@ class LoginTest extends TestCase
                 'refresh_token',
             ]);
     }
+
+    public function test_user_can_logout(): void
+    {
+        $user = User::factory()->createOne();
+
+        $loginResponse = $this->postJson('api/login', ['email' => $user->email, 'password' => 'password'])
+            ->assertStatus(200)
+            ->assertCookie('refresh_token');
+
+        $token = $loginResponse->json('token');
+
+        $this->withToken($token)->postJson('api/logout')
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+            ]);
+    }
 }

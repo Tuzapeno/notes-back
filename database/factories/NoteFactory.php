@@ -18,7 +18,7 @@ class NoteFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(),
-            'description' => $this->faker->paragraph(),
+            'description' => $this->faker->sentence(),
             'date' => $this->faker->date(),
             'lastEditDate' => $this->faker->date(),
             'initialColor' => 'lightblue',

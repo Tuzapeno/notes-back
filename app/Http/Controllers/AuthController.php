@@ -26,7 +26,7 @@ class AuthController extends Controller
             'refresh_token',
             $refreshToken->plainTextToken,
             config('sanctum.expiration'),
-            '/auth/refresh_token',
+            '/api/refresh_token',
             null,
             false,
             true,
@@ -73,5 +73,23 @@ class AuthController extends Controller
             false,
             true,
         );
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens->each(function ($token) {
+            $token->delete();
+        });
+
+        return response()->json(['message' => 'Successfully logged out'], status: 200)->cookie(
+            'refresh_token',
+            '',
+            -1,
+            'api/refresh_token',
+            null,
+            false,
+            true,
+        );
+
     }
 }
